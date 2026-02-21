@@ -257,14 +257,17 @@ section[data-testid="stSidebar"] {
 # ============================================================================
 PAGE_DESCRIPTION = "🏠 Welcome to ZenFeed — your mental wellness companion."
 
-# Fetch total predictions
-total_predictions = 0
-try:
-    response = requests.get(f"{API_URL}/stats", timeout=3)
-    if response.status_code == 200:
-        total_predictions = response.json().get('total_predictions', 0)
-except:
-    pass
+@st.cache_data(ttl=60)
+def fetch_total_screenings(api_url):
+    try:
+        response = requests.get(f"{api_url}/stats", timeout=10)
+        if response.status_code == 200:
+            return response.json().get('total_predictions', 0)
+    except:
+        pass
+    return 0
+
+total_predictions = fetch_total_screenings(API_URL)
 
 with st.sidebar:
     st.markdown("## 🌿 ZenFeed")
@@ -383,17 +386,9 @@ with col2:
 # ============================================================================
 st.markdown("<hr style='border:none;border-top:1px solid #21262d;margin:10px 0 32px 0;'>", unsafe_allow_html=True)
 
-# Fetch real statistics from API
-total_predictions = 0
+# Fetch real statistics from API (reuse cached value)
 ml_models = 3
 features_analyzed = 9
-
-try:
-    response = requests.get(f"{API_URL}/stats", timeout=3)
-    if response.status_code == 200:
-        total_predictions = response.json().get('total_predictions', 0)
-except:
-    pass
 
 st.markdown(f"""
 <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:16px; padding: 0 20px;">
