@@ -11,7 +11,7 @@ import os
 # PAGE CONFIG
 # ============================================================================
 st.set_page_config(
-    page_title="🌿 ZenFeed",
+    page_title="ZenFeed",
     page_icon="🌿",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -34,6 +34,13 @@ html, body, .stApp {
   background-attachment: fixed !important;
   color: #e6edf3;
   font-family: 'Inter', sans-serif;
+}
+
+.block-container {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 h1, h2, h3, h4 {
@@ -277,7 +284,7 @@ with st.sidebar:
     st.markdown("---")
     st.markdown(f"🔢 **Total Screenings:** `{total_predictions}`")
     st.markdown("---")
-    st.markdown("<p style='color:#8b949e;font-size:0.75rem;'>🌿 Not a clinical diagnosis.</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#8b949e;font-size:0.75rem;'>For informational purposes only — not a substitute for professional mental health advice.</p>", unsafe_allow_html=True)
 
 # ============================================================================
 # SECTION 1 — HERO
@@ -315,9 +322,9 @@ st.markdown("""
       src="https://cdni.iconscout.com/illustration/premium/thumb/mental-health-illustration-svg-download-png-3016778.png"
       width="340"
       style="
-        border-radius: 20px; 
-        opacity: 0.95;
-        box-shadow: 0 8px 32px rgba(94, 234, 212, 0.12), 0 0 60px rgba(59, 130, 246, 0.15);
+        border-radius: 0; 
+        opacity: 0.9;
+        mix-blend-mode: screen;
       "
     />
   </div>
@@ -364,12 +371,20 @@ st.markdown("""
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 42px;
+    margin-bottom: 28px;
     font-weight: 600;
     position: relative;
     z-index: 1;
   ">
     Free · Anonymous · AI-powered · Takes 2 minutes
+  </div>
+
+  <!-- Trust pills -->
+  <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:42px; position:relative; z-index:1;">
+    <span style="background:rgba(94,234,212,0.1); border:1px solid rgba(94,234,212,0.25); color:#5eead4; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">🔒 No Login Required</span>
+    <span style="background:rgba(147,197,253,0.1); border:1px solid rgba(147,197,253,0.25); color:#93c5fd; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">🧠 3 ML Models</span>
+    <span style="background:rgba(196,181,253,0.1); border:1px solid rgba(196,181,253,0.25); color:#c4b5fd; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">📄 Free PDF Report</span>
+    <span style="background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.25); color:#f59e0b; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">⚡ Instant Results</span>
   </div>
 
 </div>
@@ -411,6 +426,50 @@ st.markdown(f"""
   <div class="zen-kpi">
     <div class="zen-kpi-value">100%</div>
     <div class="zen-kpi-label">Anonymous</div>
+  </div>
+
+</div>
+""", unsafe_allow_html=True)
+
+# ============================================================================
+# SECTION 2B — WHAT YOU'LL RECEIVE
+# ============================================================================
+st.markdown("<div style='margin-top:60px;'></div>", unsafe_allow_html=True)
+st.markdown("<div class='section-label'>WHAT YOU'LL RECEIVE</div>", unsafe_allow_html=True)
+
+st.markdown("""
+<div style="display:grid; grid-template-columns: repeat(2,1fr); gap:16px; margin-top:8px;">
+
+  <div style="background:rgba(94,234,212,0.05); border:1px solid rgba(94,234,212,0.15); border-radius:14px; padding:20px 24px; display:flex; align-items:flex-start; gap:16px;">
+    <div style="font-size:1.8rem; flex-shrink:0;">🎯</div>
+    <div>
+      <div style="font-family:'Poppins',sans-serif; font-weight:700; color:#5eead4; margin-bottom:6px;">ZenScore (0–100)</div>
+      <div style="color:#a0a8b0; font-size:0.88rem; line-height:1.6;">A single wellness score classifying your digital health as Healthy, At Risk, or Burnout.</div>
+    </div>
+  </div>
+
+  <div style="background:rgba(147,197,253,0.05); border:1px solid rgba(147,197,253,0.15); border-radius:14px; padding:20px 24px; display:flex; align-items:flex-start; gap:16px;">
+    <div style="font-size:1.8rem; flex-shrink:0;">🔍</div>
+    <div>
+      <div style="font-family:'Poppins',sans-serif; font-weight:700; color:#93c5fd; margin-bottom:6px;">Top Risk Factors</div>
+      <div style="color:#a0a8b0; font-size:0.88rem; line-height:1.6;">SHAP-powered explainability surfaces the 3 behavioral patterns driving your result.</div>
+    </div>
+  </div>
+
+  <div style="background:rgba(196,181,253,0.05); border:1px solid rgba(196,181,253,0.15); border-radius:14px; padding:20px 24px; display:flex; align-items:flex-start; gap:16px;">
+    <div style="font-size:1.8rem; flex-shrink:0;">💡</div>
+    <div>
+      <div style="font-family:'Poppins',sans-serif; font-weight:700; color:#c4b5fd; margin-bottom:6px;">Personalized ZenPlan</div>
+      <div style="color:#a0a8b0; font-size:0.88rem; line-height:1.6;">3 actionable digital wellness tips tailored specifically to your highest-risk domains.</div>
+    </div>
+  </div>
+
+  <div style="background:rgba(245,158,11,0.05); border:1px solid rgba(245,158,11,0.15); border-radius:14px; padding:20px 24px; display:flex; align-items:flex-start; gap:16px;">
+    <div style="font-size:1.8rem; flex-shrink:0;">📄</div>
+    <div>
+      <div style="font-family:'Poppins',sans-serif; font-weight:700; color:#f59e0b; margin-bottom:6px;">Downloadable PDF Report</div>
+      <div style="color:#a0a8b0; font-size:0.88rem; line-height:1.6;">A full ZenReport with your score breakdown, risk analysis, and wellness plan — yours to keep.</div>
+    </div>
   </div>
 
 </div>
@@ -556,7 +615,6 @@ st.markdown("""
   border-top: 1px solid #21262d;
 ">
   🌿 ZenFeed &nbsp;·&nbsp; AI-Powered Digital Wellness Assessment &nbsp;·&nbsp; For awareness purposes only — not a clinical diagnostic tool<br/>
-  <span style="font-size:0.72rem; color:#363c45;">Powered by Logistic Regression &nbsp;·&nbsp; Random Forest &nbsp;·&nbsp; XGBoost</span><br/>
   © 2026 ZenFeed &nbsp;·&nbsp; Open Source &nbsp;·&nbsp; Privacy First &nbsp;·&nbsp; Designed &amp; Developed in India 🇮🇳
 </div>
 """, unsafe_allow_html=True)
