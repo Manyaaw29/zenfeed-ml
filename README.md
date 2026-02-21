@@ -41,6 +41,7 @@ ZenFeed lets users complete a 2-minute anonymous assessment about their social m
 ### Training Data
 
 - **Dataset:** `zenfeed.csv` — 481 survey records with 20 features across social media behavior, emotional health, and demographics
+- **Source:** [Social Media and Mental Health — Kaggle](https://www.kaggle.com/datasets/souvikahmed071/social-media-and-mental-health)
 - **Target variable:** 3-class wellness label — `Healthy`, `At Risk`, `Burnout`
 - **Train/test split:** 80/20 stratified
 
