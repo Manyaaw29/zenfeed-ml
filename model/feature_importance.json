@@ -1,0 +1,11 @@
+{
+  "anxiety_score": 2.085158894185094,
+  "adhd_score": 1.9393749702904257,
+  "depression_score": 1.8738090835288304,
+  "self_esteem_score": 1.3497764666122,
+  "gender": 0.5154734282884185,
+  "age": 0.26625720709592243,
+  "relationship_status": 0.2106422170276443,
+  "social_media_hours": 0.07023903365863389,
+  "occupation": 0.0344332720351824
+}

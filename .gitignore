@@ -1,0 +1,56 @@
+# Virtual environment
+venv/
+env/
+.env/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Logs
+*.log
+logs/
+
+# Data (optional - remove if you want to track CSVs)
+# *.csv
+
+# Model artifacts (optional - remove if you want to track model files)
+# *.pkl
+# *.joblib
+# *.h5
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/

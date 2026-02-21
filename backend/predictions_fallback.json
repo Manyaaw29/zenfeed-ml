@@ -1,0 +1,46 @@
+[
+  {
+    "prediction": 1,
+    "risk_level": "At Risk",
+    "probability": 0.993,
+    "wellness_score": 47.5,
+    "adhd_score": 3.0,
+    "anxiety_score": 2.5,
+    "self_esteem_score": 2.67,
+    "depression_score": 2.33,
+    "shap_values": {
+      "anxiety_score": 2.085158894185094,
+      "adhd_score": 1.9393749702904257,
+      "depression_score": 1.8738090835288304,
+      "self_esteem_score": 1.3497764666122,
+      "gender": 0.5154734282884185,
+      "age": 0.26625720709592243,
+      "relationship_status": 0.2106422170276443,
+      "social_media_hours": 0.07023903365863389
+    },
+    "personalized_tips": [
+      {
+        "emoji": "\ud83c\udfaf",
+        "title": "Practice Mindful Scrolling",
+        "description": "Set a 15-min timer before opening any app. Ask: 'What am I here for?' This simple pause can break the autopilot habit."
+      },
+      {
+        "emoji": "\ud83d\udd15",
+        "title": "Silence the Noise",
+        "description": "Turn off all non-essential push notifications. Your brain needs space to think without constant digital interruptions."
+      },
+      {
+        "emoji": "\ud83d\udcf5",
+        "title": "Phone-Free Focus Blocks",
+        "description": "Pomodoro technique: 25 mins deep work with phone in another room, then 5-min break. Train your attention muscle."
+      }
+    ],
+    "model_used": "Random Forest",
+    "timestamp": "2026-02-21T09:42:21.938339Z",
+    "age": 21.0,
+    "gender": "Male",
+    "relationship_status": "Single",
+    "occupation": "Student",
+    "social_media_hours": 2.5
+  }
+]
