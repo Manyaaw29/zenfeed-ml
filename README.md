@@ -130,6 +130,41 @@ Open [http://localhost:8501](http://localhost:8501)
 
 ---
 
+## 🚀 Deployment (Render + Streamlit Cloud)
+
+### Step 1 — Deploy Flask backend on Render
+
+1. Go to [render.com](https://render.com) → **New → Web Service**
+2. Connect your GitHub repo
+3. Render auto-detects `render.yaml` — confirm the settings:
+   - **Build command:** `pip install -r requirements.txt`
+   - **Start command:** `cd backend && gunicorn app:app`
+   - **Runtime:** Python 3.10
+4. Under **Environment Variables**, add:
+   | Key | Value |
+   |-----|-------|
+   | `MONGO_URI` | your MongoDB Atlas connection string |
+5. Click **Deploy** — Render will give you a URL like `https://zenfeed-api.onrender.com`
+
+> ⚠️ Render free tier spins down after 15 min of inactivity — first request after idle takes ~30s to wake up.
+
+---
+
+### Step 2 — Deploy Streamlit frontend on Streamlit Cloud
+
+1. Go to [share.streamlit.io](https://share.streamlit.io) → **New app**
+2. Connect your GitHub repo, set:
+   - **Main file path:** `frontend/app.py`
+   - **Branch:** `main`
+3. Click **Advanced settings → Secrets** and add:
+   ```toml
+   API_URL = "https://zenfeed-api.onrender.com"
+   ```
+   _(replace with your actual Render URL from Step 1)_
+4. Click **Deploy**
+
+---
+
 ## ⚠️ Disclaimer
 
 ZenFeed is a screening tool for awareness purposes only — not a clinical diagnostic instrument. Results are based on statistical patterns and should not replace consultation with a licensed mental health professional.
