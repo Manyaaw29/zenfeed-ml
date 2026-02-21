@@ -247,6 +247,10 @@ def compute_shap_for_prediction(model, model_name, features_scaled):
 # ROUTES
 # ============================================================================
 
+@app.route("/", methods=["GET"])
+def home():
+    return "ZenFeed Backend Running 🚀"
+
 @app.route('/health', methods=['GET'])
 def health_check():
     """Health check endpoint."""

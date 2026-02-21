@@ -17,7 +17,10 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-API_URL = os.environ.get("API_URL", "http://localhost:5000")
+try:
+    API_URL = st.secrets.get("API_URL", os.environ.get("API_URL", "http://localhost:5000"))
+except Exception:
+    API_URL = os.environ.get("API_URL", "http://localhost:5000")
 
 # ============================================================================
 # GLOBAL CSS + GRADIENT BACKGROUND
@@ -257,10 +260,9 @@ PAGE_DESCRIPTION = "🏠 Welcome to ZenFeed — your mental wellness companion."
 # Fetch total predictions
 total_predictions = 0
 try:
-    response = requests.get(f"{API_URL}/health", timeout=3)
+    response = requests.get(f"{API_URL}/stats", timeout=3)
     if response.status_code == 200:
-        health_data = response.json()
-        total_predictions = health_data.get('total_predictions', 0)
+        total_predictions = response.json().get('total_predictions', 0)
 except:
     pass
 
@@ -382,16 +384,14 @@ with col2:
 st.markdown("<hr style='border:none;border-top:1px solid #21262d;margin:10px 0 32px 0;'>", unsafe_allow_html=True)
 
 # Fetch real statistics from API
-total_predictions = 481
+total_predictions = 0
 ml_models = 3
 features_analyzed = 9
 
 try:
-    response = requests.get(f"{API_URL}/health", timeout=3)
+    response = requests.get(f"{API_URL}/stats", timeout=3)
     if response.status_code == 200:
-        health_data = response.json()
-        total_predictions = health_data.get('total_predictions', 481)
-        ml_models = len(health_data.get('available_models', ['Random Forest', 'Logistic Regression', 'XGBoost']))
+        total_predictions = response.json().get('total_predictions', 0)
 except:
     pass
 
@@ -400,7 +400,7 @@ st.markdown(f"""
 
   <div class="zen-kpi">
     <div class="zen-kpi-value">{total_predictions}</div>
-    <div class="zen-kpi-label">Survey Records</div>
+    <div class="zen-kpi-label">Live Screenings</div>
   </div>
 
   <div class="zen-kpi">
