@@ -560,7 +560,7 @@ st.markdown("""
   padding: 24px 0;
   border-top: 1px solid #21262d;
 ">
-  🌿 ZenFeed &nbsp;·&nbsp; Built with ❤️ for mental wellness &nbsp;·&nbsp; Not a clinical tool<br/>
-  © 2024 ZenFeed &nbsp;·&nbsp; Open Source &nbsp;·&nbsp; Privacy First &nbsp;·&nbsp; Made in India 🇮🇳
+  🌿 ZenFeed &nbsp;·&nbsp; AI-Powered Digital Wellness Assessment &nbsp;·&nbsp; For awareness purposes only — not a clinical diagnostic tool<br/>
+  © 2026 ZenFeed &nbsp;·&nbsp; Open Source &nbsp;·&nbsp; Privacy First &nbsp;·&nbsp; Designed &amp; Developed in India 🇮🇳
 </div>
 """, unsafe_allow_html=True)
