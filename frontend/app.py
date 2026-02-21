@@ -561,6 +561,7 @@ st.markdown("""
   border-top: 1px solid #21262d;
 ">
   🌿 ZenFeed &nbsp;·&nbsp; AI-Powered Digital Wellness Assessment &nbsp;·&nbsp; For awareness purposes only — not a clinical diagnostic tool<br/>
+  <span style="font-size:0.72rem; color:#363c45;">Powered by Logistic Regression &nbsp;·&nbsp; Random Forest &nbsp;·&nbsp; XGBoost</span><br/>
   © 2026 ZenFeed &nbsp;·&nbsp; Open Source &nbsp;·&nbsp; Privacy First &nbsp;·&nbsp; Designed &amp; Developed in India 🇮🇳
 </div>
 """, unsafe_allow_html=True)
