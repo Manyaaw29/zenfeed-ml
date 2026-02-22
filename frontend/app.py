@@ -264,16 +264,17 @@ section[data-testid="stSidebar"] {
 # ============================================================================
 PAGE_DESCRIPTION = "🏠 Welcome to ZenFeed — your mental wellness companion."
 
-def fetch_total_screenings(api_url):
+def fetch_stats(api_url):
     try:
         response = requests.get(f"{api_url}/stats", timeout=10)
         if response.status_code == 200:
-            return response.json().get('total_predictions', 0)
+            data = response.json()
+            return data.get('total_predictions', 0), data.get('avg_wellness_score', None)
     except:
         pass
-    return 0
+    return 0, None
 
-total_predictions = fetch_total_screenings(API_URL)
+total_predictions, avg_wellness_score = fetch_stats(API_URL)
 
 with st.sidebar:
     st.markdown("## 🌿 ZenFeed")
@@ -288,7 +289,9 @@ with st.sidebar:
 # ============================================================================
 # SECTION 1 — HERO
 # ============================================================================
-st.markdown("""
+_avg_zen_label = f"{avg_wellness_score}/100" if avg_wellness_score is not None else "—"
+
+_HERO_HTML = """
 <div class="hero-bg" style="
   text-align:center; 
   padding: 60px 20px 20px 20px;
@@ -381,13 +384,15 @@ st.markdown("""
   <!-- Trust pills -->
   <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:42px; position:relative; z-index:1;">
     <span style="background:rgba(94,234,212,0.1); border:1px solid rgba(94,234,212,0.25); color:#5eead4; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">🔒 No Login Required</span>
-    <span style="background:rgba(147,197,253,0.1); border:1px solid rgba(147,197,253,0.25); color:#93c5fd; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">📊 Science-Backed</span>
+    <span style="background:rgba(147,197,253,0.1); border:1px solid rgba(147,197,253,0.25); color:#93c5fd; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">⭐ Avg ZenScore: AVG_ZEN_PLACEHOLDER</span>
     <span style="background:rgba(196,181,253,0.1); border:1px solid rgba(196,181,253,0.25); color:#c4b5fd; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">📄 Free PDF Report</span>
     <span style="background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.25); color:#f59e0b; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">⚡ Instant Results</span>
   </div>
 
 </div>
-""", unsafe_allow_html=True)
+""".replace("AVG_ZEN_PLACEHOLDER", _avg_zen_label)
+
+st.markdown(_HERO_HTML, unsafe_allow_html=True)
 
 # CTA Button
 col1, col2, col3 = st.columns([1, 1, 1])

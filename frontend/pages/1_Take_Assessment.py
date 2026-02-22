@@ -621,19 +621,9 @@ if submitted:
             
             if response.status_code == 200:
                 result = response.json()
-                used_model = result.get('model_used', model_name)
 
                 st.markdown("<hr style='border:none;border-top:2px solid #21262d;margin:40px 0;'>", unsafe_allow_html=True)
                 st.markdown("<h2 style='text-align:center;'>📊 Your ZenScore Results</h2>", unsafe_allow_html=True)
-                st.markdown(f"""
-                <p style='text-align:center;color:#8b949e;font-size:0.8rem;margin-top:-6px;margin-bottom:20px;'>
-                  Predicted by&nbsp;
-                  <span style='background:rgba(94,234,212,0.1);border:1px solid rgba(94,234,212,0.25);
-                    color:#5eead4;padding:2px 10px;border-radius:999px;font-weight:600;'>
-                    🤖 {used_model}
-                  </span>
-                </p>
-                """, unsafe_allow_html=True)
                 st.markdown("<br>", unsafe_allow_html=True)
                 
                 # ============================================================
