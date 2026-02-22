@@ -65,7 +65,13 @@ predictions_collection = None
 
 if MONGO_URI:
     try:
-        mongo_client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
+        mongo_client = MongoClient(
+            MONGO_URI,
+            serverSelectionTimeoutMS=5000,
+            connectTimeoutMS=5000,
+            socketTimeoutMS=10000,
+            connect=False  # lazy connect — avoids blocking at import time
+        )
         mongo_client.admin.command('ping')
         db = mongo_client['zenfeed']
         predictions_collection = db['predictions']
@@ -76,6 +82,31 @@ if MONGO_URI:
         mongo_client = None
 else:
     print("⚠ MONGO_URI not set — using fallback JSON storage")
+
+
+def get_mongo_collection():
+    """Return a live MongoDB collection, reconnecting lazily if needed."""
+    global mongo_client, db, predictions_collection
+    if predictions_collection is not None:
+        return predictions_collection
+    if not MONGO_URI:
+        return None
+    try:
+        mongo_client = MongoClient(
+            MONGO_URI,
+            serverSelectionTimeoutMS=5000,
+            connectTimeoutMS=5000,
+            socketTimeoutMS=10000,
+            connect=False,
+        )
+        mongo_client.admin.command('ping')
+        db = mongo_client['zenfeed']
+        predictions_collection = db['predictions']
+        print("✓ MongoDB reconnected")
+    except Exception as e:
+        print(f"⚠ MongoDB reconnect failed: {str(e)}")
+        predictions_collection = None
+    return predictions_collection
 
 # Fallback JSON file
 FALLBACK_FILE = "predictions_fallback.json"
@@ -90,8 +121,9 @@ if not os.path.exists(FALLBACK_FILE):
 def save_prediction_mongodb(data):
     """Save prediction to MongoDB, fallback to JSON."""
     try:
-        if predictions_collection is not None:
-            predictions_collection.insert_one(data)
+        col = get_mongo_collection()
+        if col is not None:
+            col.insert_one(data)
             return True
         else:
             raise Exception("MongoDB not available")
@@ -112,10 +144,11 @@ def get_predictions_from_storage():
     """Retrieve all predictions from MongoDB + fallback JSON."""
     all_predictions = []
     
-    # Get from MongoDB
-    if predictions_collection is not None:
+    # Get from MongoDB (lazy reconnect if needed)
+    col = get_mongo_collection()
+    if col is not None:
         try:
-            mongo_records = list(predictions_collection.find({}, {'_id': 0}))
+            mongo_records = list(col.find({}, {'_id': 0}))
             all_predictions.extend(mongo_records)
         except Exception as e:
             print(f"⚠ MongoDB read failed: {str(e)}")
@@ -493,9 +526,20 @@ def history():
 def stats():
     """Aggregate statistics across all predictions."""
     try:
+        # Get total count directly from MongoDB (fast, accurate, avoids loading all docs)
+        col = get_mongo_collection()
+        mongo_count = 0
+        if col is not None:
+            try:
+                mongo_count = col.count_documents({})
+            except Exception as e:
+                print(f"⚠ MongoDB count failed: {str(e)}")
+
         predictions = get_predictions_from_storage()
-        
-        if not predictions:
+        # Use MongoDB count as the authoritative total when available
+        total = mongo_count if mongo_count > 0 else len(predictions)
+
+        if not predictions and total == 0:
             return jsonify({
                 'total_predictions': 0,
                 'risk_distribution': {'Healthy': 0, 'At Risk': 0, 'Burnout': 0},
@@ -526,7 +570,7 @@ def stats():
         top_risk_factors = list(feature_importance.keys())[:3]
         
         return jsonify({
-            'total_predictions': len(predictions),
+            'total_predictions': total,
             'risk_distribution': risk_distribution,
             'avg_wellness_score': avg_wellness,
             'avg_social_media_hours': avg_sm_hours,
