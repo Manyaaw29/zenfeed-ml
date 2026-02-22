@@ -558,29 +558,6 @@ with st.form("zenscreen_form"):
         default=["Instagram", "YouTube"]
     )
 
-    # MODEL SELECTION
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("""
-    <div style='
-      background: linear-gradient(135deg, rgba(94,234,212,0.05) 0%, rgba(147,197,253,0.05) 100%);
-      border: 1px solid rgba(94,234,212,0.15);
-      border-radius: 12px;
-      padding: 16px 20px 8px 20px;
-      margin-bottom: 4px;
-    '>
-      <p style='color:#5eead4;font-weight:600;font-size:0.95rem;margin:0 0 4px 0;'>🤖 Choose ML Model</p>
-      <p style='color:#8b949e;font-size:0.78rem;margin:0 0 12px 0;'>All three were trained on the same dataset — Logistic Regression is the recommended default (highest generalisation).</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    selected_model = st.radio(
-        "Select model",
-        options=["Logistic Regression", "Random Forest", "XGBoost"],
-        index=0,
-        horizontal=True,
-        label_visibility="collapsed",
-    )
-
     # SUBMIT BUTTON
     st.markdown("<br><br>", unsafe_allow_html=True)
     submitted = st.form_submit_button("🌿 Check My ZenScore")
