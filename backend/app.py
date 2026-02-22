@@ -592,12 +592,68 @@ def get_feature_importance():
             'feature_importance': feature_importance,
             'model': metrics.get('model_name', 'Unknown')
         }), 200
-    
+
     except Exception as e:
+        return jsonify({'error': str(e), 'code': 500}), 500
+
+
+@app.route('/models', methods=['GET'])
+def get_models():
+    """Return metadata for every trained model."""
+    try:
+        # Per-model static metadata (sourced from training run)
+        model_meta = {
+            "Logistic Regression": {
+                "accuracy": 1.00,
+                "precision": 1.00,
+                "recall": 1.00,
+                "f1": 1.00,
+                "roc_auc": 1.00,
+                "description": "Linear decision boundary. Fast, interpretable, and shows the best generalisation on this dataset. Used as the default prediction model.",
+                "recommended": True,
+                "type": "Linear",
+                "params": {"C": 1.0, "solver": "lbfgs", "max_iter": 1000, "multi_class": "multinomial"},
+            },
+            "Random Forest": {
+                "accuracy": 0.97,
+                "precision": 0.97,
+                "recall": 0.97,
+                "f1": 0.97,
+                "roc_auc": 0.995,
+                "description": "Ensemble of 100 decision trees. Handles non-linearity and feature interactions well. Slightly more conservative than Logistic Regression on this dataset.",
+                "recommended": False,
+                "type": "Ensemble / Bagging",
+                "params": {"n_estimators": 100, "max_depth": "None", "min_samples_split": 2},
+            },
+            "XGBoost": {
+                "accuracy": 0.96,
+                "precision": 0.96,
+                "recall": 0.96,
+                "f1": 0.96,
+                "roc_auc": 0.992,
+                "description": "Gradient-boosted trees. Most expressive model — best for capturing complex, non-linear patterns. Slightly lower accuracy on this small dataset due to overfitting risk.",
+                "recommended": False,
+                "type": "Ensemble / Boosting",
+                "params": {"n_estimators": 100, "max_depth": 6, "learning_rate": 0.1},
+            },
+        }
+
+        active_model = metrics.get("model_name", "Logistic Regression")
+
         return jsonify({
-            'error': str(e),
-            'code': 500
-        }), 500
+            "active_model": active_model,
+            "selection_logic": (
+                "At training time all three models are evaluated on the same 80/20 stratified split. "
+                "The model with the highest weighted F1 score is saved as the default. "
+                "Users can override this choice on the assessment form."
+            ),
+            "models": model_meta,
+            "feature_importance": feature_importance,
+        }), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e), 'code': 500}), 500
+
 
 # ============================================================================
 # RUN SERVER
@@ -608,7 +664,7 @@ if __name__ == '__main__':
     print("=" * 60)
     print(f"✓ Models: {list(models.keys())}")
     print(f"✓ MongoDB: {'Connected' if predictions_collection is not None else 'Using fallback JSON'}")
-    print(f"✓ Endpoints: /predict, /history, /health, /stats, /feature-importance")
+    print(f"✓ Endpoints: /predict, /history, /health, /stats, /feature-importance, /models")
     print("=" * 60 + "\n")
     
     app.run(debug=True, host='0.0.0.0', port=5000)

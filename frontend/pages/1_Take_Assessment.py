@@ -376,7 +376,15 @@ with st.sidebar:
     st.markdown("---")
     st.markdown(f"🔢 **Total Screenings:** `{total_predictions}`")
     st.markdown("---")
-    st.markdown("<p style='color:#8b949e;font-size:0.75rem;'>🌿 Not a clinical diagnosis.</p>", unsafe_allow_html=True)
+    st.markdown("""
+<div style='background:rgba(94,234,212,0.05);border:1px solid rgba(94,234,212,0.15);border-radius:10px;padding:10px 12px;margin-bottom:4px;'>
+  <p style='color:#5eead4;font-size:0.78rem;font-weight:600;margin:0 0 4px 0;'>🤖 Active Model</p>
+  <p style='color:#e6edf3;font-size:0.82rem;margin:0 0 4px 0;font-weight:600;'>Logistic Regression ✅</p>
+  <p style='color:#8b949e;font-size:0.72rem;margin:0;line-height:1.5;'>Default — highest F1 on training eval. Override below in the form.</p>
+</div>
+""", unsafe_allow_html=True)
+    st.markdown("---")
+    st.markdown("<p style='color:#8b949e;font-size:0.75rem;'>For informational purposes only — not a substitute for professional mental health advice. 🌿</p>", unsafe_allow_html=True)
 
 # ============================================================================
 # PAGE HEADER
@@ -549,7 +557,36 @@ with st.form("zenscreen_form"):
         ["Instagram", "TikTok", "Twitter/X", "YouTube", "Facebook", "Snapchat", "LinkedIn", "Reddit", "Pinterest", "Other"],
         default=["Instagram", "YouTube"]
     )
-    
+
+    # MODEL SELECTION
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("""
+    <div style='
+      background: linear-gradient(135deg, rgba(94,234,212,0.05) 0%, rgba(147,197,253,0.05) 100%);
+      border: 1px solid rgba(94,234,212,0.15);
+      border-radius: 12px;
+      padding: 16px 20px 8px 20px;
+      margin-bottom: 4px;
+    '>
+      <p style='color:#5eead4;font-weight:600;font-size:0.95rem;margin:0 0 4px 0;'>🤖 Choose ML Model</p>
+      <p style='color:#8b949e;font-size:0.78rem;margin:0 0 12px 0;'>All three were trained on the same dataset — Logistic Regression is the recommended default (highest generalisation).</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    MODEL_DESCRIPTIONS = {
+        "Logistic Regression": "⭐ Recommended · Linear boundary · Best generalisation · Fastest · Used by default",
+        "Random Forest":       "🌲 Ensemble of 100 decision trees · Handles non-linearity · Slightly more conservative",
+        "XGBoost":             "⚡ Gradient-boosted trees · Most expressive · Best for complex patterns",
+    }
+    selected_model = st.radio(
+        "Select model",
+        options=list(MODEL_DESCRIPTIONS.keys()),
+        index=0,
+        horizontal=True,
+        label_visibility="collapsed",
+    )
+    st.caption(MODEL_DESCRIPTIONS[selected_model])
+
     # SUBMIT BUTTON
     st.markdown("<br><br>", unsafe_allow_html=True)
     submitted = st.form_submit_button("🌿 Check My ZenScore")
@@ -558,9 +595,9 @@ with st.form("zenscreen_form"):
 # PROCESS SUBMISSION
 # ============================================================================
 if submitted:
-    
-    # Use best performing model (Logistic Regression)
-    model_name = "Logistic Regression"
+
+    # Use the model the user selected in the form
+    model_name = selected_model
     
     # Prepare payload
     payload = {
@@ -591,9 +628,19 @@ if submitted:
             
             if response.status_code == 200:
                 result = response.json()
-                
+                used_model = result.get('model_used', model_name)
+
                 st.markdown("<hr style='border:none;border-top:2px solid #21262d;margin:40px 0;'>", unsafe_allow_html=True)
                 st.markdown("<h2 style='text-align:center;'>📊 Your ZenScore Results</h2>", unsafe_allow_html=True)
+                st.markdown(f"""
+                <p style='text-align:center;color:#8b949e;font-size:0.8rem;margin-top:-6px;margin-bottom:20px;'>
+                  Predicted by&nbsp;
+                  <span style='background:rgba(94,234,212,0.1);border:1px solid rgba(94,234,212,0.25);
+                    color:#5eead4;padding:2px 10px;border-radius:999px;font-weight:600;'>
+                    🤖 {used_model}
+                  </span>
+                </p>
+                """, unsafe_allow_html=True)
                 st.markdown("<br>", unsafe_allow_html=True)
                 
                 # ============================================================
