@@ -12,16 +12,6 @@ import plotly.graph_objects as go
 import plotly.express as px
 from datetime import datetime
 
-# ============================================================================
-# PAGE CONFIG
-# ============================================================================
-st.set_page_config(
-    page_title="ZenFeed · Dashboard",
-    page_icon="🌿",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
-
 try:
     API_URL = st.secrets.get("API_URL", os.environ.get("API_URL", "http://localhost:5000"))
 except Exception:

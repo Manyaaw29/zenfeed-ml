@@ -1,0 +1,376 @@
+﻿"""
+🌿 ZenFeed — Landing Page
+Your mind deserves a healthy feed.
+"""
+
+import streamlit as st
+import requests
+import os
+
+try:
+    API_URL = st.secrets.get("API_URL", os.environ.get("API_URL", "http://localhost:5000"))
+except Exception:
+    API_URL = os.environ.get("API_URL", "http://localhost:5000")
+
+
+# ============================================================================
+# SIDEBAR
+# ============================================================================
+PAGE_DESCRIPTION = "🏠 Welcome to ZenFeed — your mental wellness companion."
+
+def fetch_stats(api_url):
+    try:
+        response = requests.get(f"{api_url}/stats", timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            return data.get('total_predictions', 0), data.get('avg_wellness_score', None)
+    except:
+        pass
+    return 0, None
+
+if 'total_predictions' not in st.session_state:
+    st.session_state.total_predictions = 0
+_fetched, avg_wellness_score = fetch_stats(API_URL)
+if _fetched and _fetched > 0:
+    st.session_state.total_predictions = _fetched
+total_predictions = st.session_state.total_predictions
+
+with st.sidebar:
+    st.markdown("## 🌿 ZenFeed")
+    st.markdown("<p style='color:#8b949e;font-size:0.85rem;margin-top:-10px;'>Your mind deserves a healthy feed.</p>", unsafe_allow_html=True)
+    st.markdown("---")
+    st.markdown(f"**{PAGE_DESCRIPTION}**")
+    st.markdown("---")
+    st.markdown(f"🔢 **Total Screenings:** `{total_predictions}`")
+    st.markdown("---")
+    st.markdown("<p style='color:#8b949e;font-size:0.75rem;'>For informational purposes only — not a substitute for professional mental health advice. 🌿</p>", unsafe_allow_html=True)
+
+# ============================================================================
+# SECTION 1 — HERO
+# ============================================================================
+_HERO_HTML = """
+<div class="hero-bg" style="
+  text-align:center; 
+  padding: 60px 20px 20px 20px;
+  position: relative;
+  overflow: hidden;
+">
+  <!-- Animated background glow -->
+  <div style="
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(94, 234, 212, 0.08) 0%, rgba(147, 197, 253, 0.07) 50%, transparent 70%);
+    animation: float 6s ease-in-out infinite;
+    z-index: 0;
+  "></div>
+  
+  <style>
+    @keyframes float {
+      0%, 100% { transform: translateX(-50%) translateY(0px); }
+      50% { transform: translateX(-50%) translateY(-30px); }
+    }
+  </style>
+
+  <!-- Illustration -->
+  <div style="margin-bottom: 32px; position: relative; z-index: 1;">
+    <img
+      src="https://cdni.iconscout.com/illustration/premium/thumb/mental-health-illustration-svg-download-png-3016778.png"
+      width="340"
+      style="
+        border-radius: 0; 
+        opacity: 0.9;
+        mix-blend-mode: screen;
+      "
+    />
+  </div>
+
+  <!-- App name -->
+  <div style="
+    font-family: 'Poppins', sans-serif;
+    font-size: 3.8rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #5eead4 0%, #93c5fd 50%, #c4b5fd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -2px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  ">
+    🌿 ZenFeed
+  </div>
+
+  <!-- Primary tagline -->
+  <div style="
+    font-family: 'Inter', sans-serif;
+    font-size: 1.3rem;
+    color: #e3e8ef;
+    font-weight: 500;
+    margin-bottom: 12px;
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+  ">
+    Understand how your feed is affecting your mind.
+  </div>
+
+  <!-- Subtitle -->
+  <div style="
+    font-size: 0.95rem;
+    color: #94a3b8;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+  ">
+    A 2-minute anonymous check-in for your digital mental health.
+  </div>
+
+  <!-- Trust pills -->
+  <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:42px; position:relative; z-index:1;">
+    <span style="background:rgba(94,234,212,0.1); border:1px solid rgba(94,234,212,0.25); color:#5eead4; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">🔒 No Login Required</span>
+    <span style="background:rgba(196,181,253,0.1); border:1px solid rgba(196,181,253,0.25); color:#c4b5fd; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">📄 Free PDF Report</span>
+    <span style="background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.25); color:#f59e0b; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">⚡ Instant Results</span>
+  </div>
+
+</div>
+"""
+
+st.markdown(_HERO_HTML, unsafe_allow_html=True)
+
+# CTA Button
+col1, col2, col3 = st.columns([1, 1, 1])
+with col2:
+    if st.button("Calculate your ZenScore 🌿", use_container_width=True):
+        st.switch_page("pages/1_Take_Assessment.py")
+
+# ============================================================================
+# SECTION 2 — ANIMATED STATS ROW
+# ============================================================================
+st.markdown("<hr style='border:none;border-top:1px solid #21262d;margin:10px 0 32px 0;'>", unsafe_allow_html=True)
+
+# Fetch real statistics from API (reuse cached value)
+avg_zen_kpi = f"{avg_wellness_score}" if avg_wellness_score is not None else "—"
+features_analyzed = 9
+
+st.markdown(f"""
+<div style="display:grid; grid-template-columns: repeat(4,1fr); gap:16px; padding: 0 20px;">
+
+  <div class="zen-kpi">
+    <div class="zen-kpi-value">{total_predictions}</div>
+    <div class="zen-kpi-label">Live Screenings</div>
+  </div>
+
+  <div class="zen-kpi">
+    <div class="zen-kpi-value">{avg_zen_kpi}</div>
+    <div class="zen-kpi-label">Avg. ZenScore</div>
+  </div>
+
+  <div class="zen-kpi">
+    <div class="zen-kpi-value">{features_analyzed}</div>
+    <div class="zen-kpi-label">Features Analyzed</div>
+  </div>
+
+  <div class="zen-kpi">
+    <div class="zen-kpi-value">100%</div>
+    <div class="zen-kpi-label">Anonymous</div>
+  </div>
+
+</div>
+""", unsafe_allow_html=True)
+
+# ============================================================================
+# SECTION 2B — WHAT YOU'LL RECEIVE
+# ============================================================================
+st.markdown("<div style='margin-top:60px;'></div>", unsafe_allow_html=True)
+st.markdown("<div class='section-label'>WHAT YOU'LL RECEIVE</div>", unsafe_allow_html=True)
+
+st.markdown("""
+<div style="display:grid; grid-template-columns: repeat(2,1fr); gap:16px; margin-top:8px;">
+
+  <div style="background:rgba(94,234,212,0.05); border:1px solid rgba(94,234,212,0.15); border-radius:14px; padding:20px 24px; display:flex; align-items:flex-start; gap:16px;">
+    <div style="font-size:1.8rem; flex-shrink:0;">🎯</div>
+    <div>
+      <div style="font-family:'Poppins',sans-serif; font-weight:700; color:#5eead4; margin-bottom:6px;">ZenScore (0–100)</div>
+      <div style="color:#a0a8b0; font-size:0.88rem; line-height:1.6;">A single wellness score classifying your digital health as Healthy, At Risk, or Burnout.</div>
+    </div>
+  </div>
+
+  <div style="background:rgba(147,197,253,0.05); border:1px solid rgba(147,197,253,0.15); border-radius:14px; padding:20px 24px; display:flex; align-items:flex-start; gap:16px;">
+    <div style="font-size:1.8rem; flex-shrink:0;">🔍</div>
+    <div>
+      <div style="font-family:'Poppins',sans-serif; font-weight:700; color:#93c5fd; margin-bottom:6px;">Top Risk Factors</div>
+      <div style="color:#a0a8b0; font-size:0.88rem; line-height:1.6;">SHAP-powered explainability surfaces the 3 behavioral patterns driving your result.</div>
+    </div>
+  </div>
+
+  <div style="background:rgba(196,181,253,0.05); border:1px solid rgba(196,181,253,0.15); border-radius:14px; padding:20px 24px; display:flex; align-items:flex-start; gap:16px;">
+    <div style="font-size:1.8rem; flex-shrink:0;">💡</div>
+    <div>
+      <div style="font-family:'Poppins',sans-serif; font-weight:700; color:#c4b5fd; margin-bottom:6px;">Personalized ZenPlan</div>
+      <div style="color:#a0a8b0; font-size:0.88rem; line-height:1.6;">3 actionable digital wellness tips tailored specifically to your highest-risk domains.</div>
+    </div>
+  </div>
+
+  <div style="background:rgba(245,158,11,0.05); border:1px solid rgba(245,158,11,0.15); border-radius:14px; padding:20px 24px; display:flex; align-items:flex-start; gap:16px;">
+    <div style="font-size:1.8rem; flex-shrink:0;">📄</div>
+    <div>
+      <div style="font-family:'Poppins',sans-serif; font-weight:700; color:#f59e0b; margin-bottom:6px;">Downloadable PDF Report</div>
+      <div style="color:#a0a8b0; font-size:0.88rem; line-height:1.6;">A full ZenReport with your score breakdown, risk analysis, and wellness plan — yours to keep.</div>
+    </div>
+  </div>
+
+</div>
+""", unsafe_allow_html=True)
+
+# ============================================================================
+# SECTION 3 — HOW IT WORKS
+# ============================================================================
+st.markdown("<div style='margin-top:60px;'></div>", unsafe_allow_html=True)
+st.markdown("<div class='section-label'>HOW IT WORKS</div>", unsafe_allow_html=True)
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown("""
+    <div class="zen-card" style="border-top: 3px solid #5eead4;">
+      <div style="
+        width:40px; height:40px; border-radius:50%;
+        background: linear-gradient(135deg,#0d9488,#0f766e);
+        display:flex; align-items:center; justify-content:center;
+        font-weight:800; font-size:1.1rem; color:#fff;
+        margin-bottom:16px;
+        box-shadow: 0 4px 15px rgba(94, 234, 212, 0.18);
+      ">1</div>
+      <div style="font-family:'Poppins',sans-serif; font-size:1.15rem; font-weight:700; margin:0 0 10px 0; color:#5eead4;">📋 Fill the Form</div>
+      <p style="color:#a0a8b0; font-size:0.92rem; line-height:1.7; margin:0;">
+        Answer 15 quick questions about your social media habits and how you feel.
+        Takes under 2 minutes. No account needed.
+      </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col2:
+    st.markdown("""
+    <div class="zen-card" style="border-top: 3px solid #93c5fd;">
+      <div style="
+        width:40px; height:40px; border-radius:50%;
+        background: linear-gradient(135deg,#2563eb,#1d4ed8);
+        display:flex; align-items:center; justify-content:center;
+        font-weight:800; font-size:1.1rem; color:#fff;
+        margin-bottom:16px;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+      ">2</div>
+      <div style="font-family:'Poppins',sans-serif; font-size:1.15rem; font-weight:700; margin:0 0 10px 0; color:#93c5fd;">🔍 Pattern Analysis</div>
+      <p style="color:#a0a8b0; font-size:0.92rem; line-height:1.7; margin:0;">
+        Your responses are scored and weighted across 9 behavioral
+        dimensions to build your personal wellness profile.
+      </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col3:
+    st.markdown("""
+    <div class="zen-card" style="border-top: 3px solid #c4b5fd;">
+      <div style="
+        width:40px; height:40px; border-radius:50%;
+        background: linear-gradient(135deg,#6d28d9,#5b21b6);
+        display:flex; align-items:center; justify-content:center;
+        font-weight:800; font-size:1.1rem; color:#fff;
+        margin-bottom:16px;
+        box-shadow: 0 4px 15px rgba(196, 181, 253, 0.18);
+      ">3</div>
+      <div style="font-family:'Poppins',sans-serif; font-size:1.15rem; font-weight:700; margin:0 0 10px 0; color:#c4b5fd;">📊 Get Your ZenScore</div>
+      <p style="color:#a0a8b0; font-size:0.92rem; line-height:1.7; margin:0;">
+        See your 0–100 Wellness Score, top SHAP-powered risk factors, and 3
+        personalized tips. Download a PDF report.
+      </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# ============================================================================
+# SECTION 4 — WHAT WE MEASURE
+# ============================================================================
+st.markdown("<div style='margin-top:50px;'></div>", unsafe_allow_html=True)
+st.markdown("<div class='section-label'>WHAT WE ANALYZE</div>", unsafe_allow_html=True)
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.markdown("""
+    <div class="zen-card" style="border-left:5px solid #5eead4; background: linear-gradient(135deg, rgba(94, 234, 212, 0.04) 0%, rgba(8, 16, 30, 0.97) 100%);">
+      <div style="font-family:'Poppins',sans-serif; font-size:1.3rem; font-weight:700; margin:0 0 10px 0; color:#5eead4;">🎯 ADHD Tendency</div>
+      <p style="color:#a0a8b0; font-size:0.95rem; line-height:1.7; margin:0;">
+        How often social media hijacks your focus and intent. Measures purposeless
+        scrolling, distraction frequency, and loss of task awareness.
+      </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="zen-card" style="border-left:5px solid #93c5fd; background: linear-gradient(135deg, rgba(147, 197, 253, 0.04) 0%, rgba(8, 16, 30, 0.97) 100%);">
+      <div style="font-family:'Poppins',sans-serif; font-size:1.3rem; font-weight:700; margin:0 0 10px 0; color:#93c5fd;">🪞 Self-Esteem Impact</div>
+      <p style="color:#a0a8b0; font-size:0.95rem; line-height:1.7; margin:0;">
+        Comparison behavior and validation-seeking patterns. Tracks how your
+        self-worth fluctuates based on social media feedback loops.
+      </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col2:
+    st.markdown("""
+    <div class="zen-card" style="border-left:5px solid #f59e0b; background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(8, 16, 30, 0.97) 100%);">
+      <div style="font-family:'Poppins',sans-serif; font-size:1.3rem; font-weight:700; margin:0 0 10px 0; color:#f59e0b;">😰 Anxiety Signals</div>
+      <p style="color:#a0a8b0; font-size:0.95rem; line-height:1.7; margin:0;">
+        Restlessness, worry levels, and need for constant connectivity. Identifies
+        when social media becomes a source of stress rather than relaxation.
+      </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="zen-card" style="border-left:5px solid #c4b5fd; background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(8, 16, 30, 0.97) 100%);">
+      <div style="font-family:'Poppins',sans-serif; font-size:1.3rem; font-weight:700; margin:0 0 10px 0; color:#c4b5fd;">😔 Depression Indicators</div>
+      <p style="color:#a0a8b0; font-size:0.95rem; line-height:1.7; margin:0;">
+        Mood dips, interest loss, and sleep disruption from screens. Measures
+        how your emotional baseline shifts with digital consumption.
+      </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# ============================================================================
+# SECTION 5 — DISCLAIMER
+# ============================================================================
+st.markdown("""
+<div class="disclaimer" style="max-width:680px; margin: 32px auto 0 auto;">
+  ⚠️ <strong>ZenFeed is a screening tool, not a clinical diagnosis.</strong>
+  Results are based on statistical patterns from survey data and do not replace
+  professional mental health advice. If you are struggling, please see our
+  <strong>Resources</strong> page for helplines.
+</div>
+""", unsafe_allow_html=True)
+
+# ============================================================================
+# SECTION 6 — FOOTER
+# ============================================================================
+st.markdown("""
+<div style="
+  text-align:center;
+  color:#484f58;
+  font-size:0.78rem;
+  margin-top:60px;
+  padding: 24px 0;
+  border-top: 1px solid #21262d;
+">
+  🌿 ZenFeed &nbsp;·&nbsp; Digital Wellness Assessment &nbsp;·&nbsp; For awareness purposes only — not a clinical diagnostic tool<br/>
+  © 2026 ZenFeed &nbsp;·&nbsp; Open Source &nbsp;·&nbsp; Privacy First &nbsp;·&nbsp; Designed &amp; Developed in India 🇮🇳
+</div>
+""", unsafe_allow_html=True)

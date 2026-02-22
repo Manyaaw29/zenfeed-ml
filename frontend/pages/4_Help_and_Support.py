@@ -7,16 +7,6 @@ import streamlit as st
 import requests
 import os
 
-# ============================================================================
-# PAGE CONFIG
-# ============================================================================
-st.set_page_config(
-    page_title="ZenFeed · Resources",
-    page_icon="🌿",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
-
 try:
     API_URL = st.secrets.get("API_URL", os.environ.get("API_URL", "http://localhost:5000"))
 except Exception:

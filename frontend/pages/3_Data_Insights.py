@@ -11,16 +11,6 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
 
-# ============================================================================
-# PAGE CONFIG
-# ============================================================================
-st.set_page_config(
-    page_title="ZenFeed · Insights",
-    page_icon="🌿",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
-
 try:
     API_URL = st.secrets.get("API_URL", os.environ.get("API_URL", "http://localhost:5000"))
 except Exception:
