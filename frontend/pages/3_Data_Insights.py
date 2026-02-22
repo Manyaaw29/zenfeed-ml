@@ -200,13 +200,17 @@ PLOTLY_THEME = dict(
 # ============================================================================
 PAGE_DESCRIPTION = "🔎 Patterns across all ZenFeed screenings"
 
-total_predictions = 0
+if 'total_predictions' not in st.session_state:
+    st.session_state.total_predictions = 0
 try:
     response = requests.get(f"{API_URL}/stats", timeout=5)
     if response.status_code == 200:
-        total_predictions = response.json().get('total_predictions', 0)
+        fetched = response.json().get('total_predictions', 0)
+        if fetched > 0:
+            st.session_state.total_predictions = fetched
 except:
     pass
+total_predictions = st.session_state.total_predictions
 
 with st.sidebar:
     st.markdown("## 🌿 ZenFeed")

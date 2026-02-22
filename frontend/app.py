@@ -274,7 +274,12 @@ def fetch_stats(api_url):
         pass
     return 0, None
 
-total_predictions, avg_wellness_score = fetch_stats(API_URL)
+if 'total_predictions' not in st.session_state:
+    st.session_state.total_predictions = 0
+_fetched, avg_wellness_score = fetch_stats(API_URL)
+if _fetched and _fetched > 0:
+    st.session_state.total_predictions = _fetched
+total_predictions = st.session_state.total_predictions
 
 with st.sidebar:
     st.markdown("## 🌿 ZenFeed")

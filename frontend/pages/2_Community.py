@@ -200,13 +200,17 @@ PLOTLY_THEME = dict(
 # ============================================================================
 PAGE_DESCRIPTION = "📊 Community wellness data — anonymized"
 
-total_predictions = 0
+if 'total_predictions' not in st.session_state:
+    st.session_state.total_predictions = 0
 try:
     response = requests.get(f"{API_URL}/stats", timeout=5)
     if response.status_code == 200:
-        total_predictions = response.json().get('total_predictions', 0)
+        fetched = response.json().get('total_predictions', 0)
+        if fetched > 0:
+            st.session_state.total_predictions = fetched
 except:
     pass
+total_predictions = st.session_state.total_predictions
 
 with st.sidebar:
     st.markdown("## 🌿 ZenFeed")
@@ -567,7 +571,7 @@ if show_all:
 else:
     display_cols = ['timestamp', 'wellness_score', 'risk_level', 'adhd_score', 
                     'anxiety_score', 'self_esteem_score', 'depression_score', 
-                    'age', 'gender', 'occupation', 'model_used']
+                    'age', 'gender', 'occupation']
     display_cols = [col for col in display_cols if col in df_filtered.columns]
 
 df_display = df_filtered[display_cols].copy()
