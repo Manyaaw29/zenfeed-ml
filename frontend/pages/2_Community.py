@@ -134,7 +134,7 @@ section[data-testid="stSidebar"] {
   margin-top: 4px;
 }
 
-.badge-healthy { background:#0a1e1a; color:#5eead4; border:1px solid #5eead4; border-radius:20px; padding:4px 14px; font-weight:600; font-size:0.9rem; }
+.badge-healthy { background:#052d16; color:#22c55e; border:1px solid #22c55e; border-radius:20px; padding:4px 14px; font-weight:600; font-size:0.9rem; }
 .badge-atrisk  { background:#2d1f00; color:#f59e0b; border:1px solid #f59e0b; border-radius:20px; padding:4px 14px; font-weight:600; font-size:0.9rem; }
 .badge-burnout { background:#2d0d0d; color:#ef4444; border:1px solid #ef4444; border-radius:20px; padding:4px 14px; font-weight:600; font-size:0.9rem; }
 
@@ -313,7 +313,8 @@ with col1:
     
     risk_labels = list(risk_dist.keys())
     risk_values = list(risk_dist.values())
-    risk_colors = ['#5eead4', '#f59e0b', '#ef4444']
+    _color_map = {'Healthy': '#22c55e', 'At Risk': '#f59e0b', 'Burnout': '#ef4444'}
+    risk_colors = [_color_map.get(l, '#93c5fd') for l in risk_labels]
     
     fig_donut = go.Figure(data=[go.Pie(
         labels=risk_labels,
@@ -337,7 +338,7 @@ with col2:
     st.markdown("<h3>Social Media Hours vs Wellness</h3>", unsafe_allow_html=True)
     
     if 'social_media_hours' in df.columns and 'wellness_score' in df.columns:
-        color_map = {'Healthy': '#5eead4', 'At Risk': '#f59e0b', 'Burnout': '#ef4444'}
+        color_map = {'Healthy': '#22c55e', 'At Risk': '#f59e0b', 'Burnout': '#ef4444'}
         
         fig_scatter = px.scatter(
             df,
@@ -395,7 +396,7 @@ with col1:
             x='age_group',
             y='count',
             color='risk_level',
-            color_discrete_map={'Healthy': '#5eead4', 'At Risk': '#f59e0b', 'Burnout': '#ef4444'},
+            color_discrete_map={'Healthy': '#22c55e', 'At Risk': '#f59e0b', 'Burnout': '#ef4444'},
             barmode='group'
         )
         
@@ -465,7 +466,7 @@ with col1:
         fig_radar = go.Figure()
         
         categories = ['ADHD', 'Anxiety', 'Self-Esteem', 'Depression']
-        colors_radar = {'Healthy': '#5eead4', 'At Risk': '#f59e0b', 'Burnout': '#ef4444'}
+        colors_radar = {'Healthy': '#22c55e', 'At Risk': '#f59e0b', 'Burnout': '#ef4444'}
         
         for risk, color in colors_radar.items():
             if risk in radar_data.index:

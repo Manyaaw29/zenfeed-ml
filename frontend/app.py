@@ -139,7 +139,7 @@ section[data-testid="stSidebar"] {
   z-index: 1;
 }
 
-.badge-healthy { background:#0a1e1a; color:#5eead4; border:1px solid #5eead4; border-radius:20px; padding:4px 14px; font-weight:600; font-size:0.9rem; }
+.badge-healthy { background:#052d16; color:#22c55e; border:1px solid #22c55e; border-radius:20px; padding:4px 14px; font-weight:600; font-size:0.9rem; }
 .badge-atrisk  { background:#2d1f00; color:#f59e0b; border:1px solid #f59e0b; border-radius:20px; padding:4px 14px; font-weight:600; font-size:0.9rem; }
 .badge-burnout { background:#2d0d0d; color:#ef4444; border:1px solid #ef4444; border-radius:20px; padding:4px 14px; font-weight:600; font-size:0.9rem; }
 

@@ -134,7 +134,7 @@ section[data-testid="stSidebar"] {
   margin-top: 4px;
 }
 
-.badge-healthy { background:#0a1e1a; color:#5eead4; border:1px solid #5eead4; border-radius:20px; padding:4px 14px; font-weight:600; font-size:0.9rem; }
+.badge-healthy { background:#052d16; color:#22c55e; border:1px solid #22c55e; border-radius:20px; padding:4px 14px; font-weight:600; font-size:0.9rem; }
 .badge-atrisk  { background:#2d1f00; color:#f59e0b; border:1px solid #f59e0b; border-radius:20px; padding:4px 14px; font-weight:600; font-size:0.9rem; }
 .badge-burnout { background:#2d0d0d; color:#ef4444; border:1px solid #ef4444; border-radius:20px; padding:4px 14px; font-weight:600; font-size:0.9rem; }
 
@@ -312,7 +312,7 @@ if all(col in df.columns for col in ['adhd_score', 'anxiety_score', 'self_esteem
         ('depression_score', '😔 Depression', col4)
     ]
     
-    color_map = {'Healthy': '#5eead4', 'At Risk': '#f59e0b', 'Burnout': '#ef4444'}
+    color_map = {'Healthy': '#22c55e', 'At Risk': '#f59e0b', 'Burnout': '#ef4444'}
     
     for score_col, title, col in composite_info:
         with col:
@@ -361,8 +361,8 @@ with col1:
     if 'social_media_hours' in df.columns and 'risk_level' in df.columns:
         fig_violin = go.Figure()
         
-        color_map = {'Healthy': '#5eead4', 'At Risk': '#f59e0b', 'Burnout': '#ef4444'}
-        
+        color_map = {'Healthy': '#22c55e', 'At Risk': '#f59e0b', 'Burnout': '#ef4444'}
+
         for risk_level, color in color_map.items():
             data = df[df['risk_level'] == risk_level]['social_media_hours']
             
@@ -401,7 +401,7 @@ with col2:
             x='occupation',
             y='count',
             color='risk_level',
-            color_discrete_map={'Healthy': '#5eead4', 'At Risk': '#f59e0b', 'Burnout': '#ef4444'},
+            color_discrete_map={'Healthy': '#22c55e', 'At Risk': '#f59e0b', 'Burnout': '#ef4444'},
             barmode='stack'
         )
         
@@ -436,7 +436,7 @@ with col1:
             x='gender',
             y='count',
             color='risk_level',
-            color_discrete_map={'Healthy': '#5eead4', 'At Risk': '#f59e0b', 'Burnout': '#ef4444'},
+            color_discrete_map={'Healthy': '#22c55e', 'At Risk': '#f59e0b', 'Burnout': '#ef4444'},
             barmode='group'
         )
         
