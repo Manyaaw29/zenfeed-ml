@@ -8,7 +8,7 @@ ZenFeed lets users complete a 2-minute anonymous assessment about their social m
 
 ## 🔗 Live Demo
 
-> [**https://zenfeed-ml-kzgcebsh6wrmt6t6thmgop.streamlit.app/**](#)
+> [**https://zenfeed-ml-kzgcebsh6wrmt6t6thmgop.streamlit.app/**](https://zenfeed-ml-kzgcebsh6wrmt6t6thmgop.streamlit.app/)
 
 ---
 
