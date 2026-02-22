@@ -1,6 +1,6 @@
 # 🌿 ZenFeed — Social Media Mental Wellness Analyzer
 
-> **An AI-powered mental health screening tool that analyzes social media consumption patterns and predicts digital wellness risk using ensemble machine learning.**
+> **A mental health screening tool that analyzes social media consumption patterns and predicts digital wellness risk using ensemble machine learning.**
 
 ZenFeed lets users complete a 2-minute anonymous assessment about their social media habits and emotional state. Three trained ML models analyze 9 behavioral and demographic features to generate a personalized **ZenScore (0–100)**, classify wellness risk (_Healthy / At Risk / Burnout_), surface SHAP-based top risk factors, and deliver a downloadable PDF wellness report — all in real time.
 
