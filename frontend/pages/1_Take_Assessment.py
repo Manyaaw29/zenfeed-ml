@@ -573,19 +573,13 @@ with st.form("zenscreen_form"):
     </div>
     """, unsafe_allow_html=True)
 
-    MODEL_DESCRIPTIONS = {
-        "Logistic Regression": "⭐ Recommended · Linear boundary · Best generalisation · Fastest · Used by default",
-        "Random Forest":       "🌲 Ensemble of 100 decision trees · Handles non-linearity · Slightly more conservative",
-        "XGBoost":             "⚡ Gradient-boosted trees · Most expressive · Best for complex patterns",
-    }
     selected_model = st.radio(
         "Select model",
-        options=list(MODEL_DESCRIPTIONS.keys()),
+        options=["Logistic Regression", "Random Forest", "XGBoost"],
         index=0,
         horizontal=True,
         label_visibility="collapsed",
     )
-    st.caption(MODEL_DESCRIPTIONS[selected_model])
 
     # SUBMIT BUTTON
     st.markdown("<br><br>", unsafe_allow_html=True)
@@ -596,8 +590,7 @@ with st.form("zenscreen_form"):
 # ============================================================================
 if submitted:
 
-    # Use the model the user selected in the form
-    model_name = selected_model
+    model_name = "Logistic Regression"
     
     # Prepare payload
     payload = {

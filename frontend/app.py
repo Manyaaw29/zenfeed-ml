@@ -381,7 +381,7 @@ st.markdown("""
   <!-- Trust pills -->
   <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:42px; position:relative; z-index:1;">
     <span style="background:rgba(94,234,212,0.1); border:1px solid rgba(94,234,212,0.25); color:#5eead4; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">🔒 No Login Required</span>
-    <span style="background:rgba(147,197,253,0.1); border:1px solid rgba(147,197,253,0.25); color:#93c5fd; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">🧠 3 ML Models</span>
+    <span style="background:rgba(147,197,253,0.1); border:1px solid rgba(147,197,253,0.25); color:#93c5fd; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">📊 Science-Backed</span>
     <span style="background:rgba(196,181,253,0.1); border:1px solid rgba(196,181,253,0.25); color:#c4b5fd; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">📄 Free PDF Report</span>
     <span style="background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.25); color:#f59e0b; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">⚡ Instant Results</span>
   </div>
