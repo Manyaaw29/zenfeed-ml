@@ -510,10 +510,10 @@ with col2:
         margin-bottom:16px;
         box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
       ">2</div>
-      <div style="font-family:'Poppins',sans-serif; font-size:1.15rem; font-weight:700; margin:0 0 10px 0; color:#93c5fd;">🤖 AI Analyzes</div>
+      <div style="font-family:'Poppins',sans-serif; font-size:1.15rem; font-weight:700; margin:0 0 10px 0; color:#93c5fd;">🔍 Pattern Analysis</div>
       <p style="color:#a0a8b0; font-size:0.92rem; line-height:1.7; margin:0;">
-        Three ML models examine your digital behavior patterns in real time
-        using advanced ensemble techniques.
+        Your responses are scored and weighted across 9 behavioral
+        dimensions to build your personal wellness profile.
       </p>
     </div>
     """, unsafe_allow_html=True)
