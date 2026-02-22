@@ -362,10 +362,9 @@ PAGE_DESCRIPTION = "📋 Complete the form to get your ZenScore"
 
 total_predictions = 0
 try:
-    response = requests.get(f"{API_URL}/health", timeout=3)
+    response = requests.get(f"{API_URL}/stats", timeout=5)
     if response.status_code == 200:
-        health_data = response.json()
-        total_predictions = health_data.get('total_predictions', 0)
+        total_predictions = response.json().get('total_predictions', 0)
 except:
     pass
 

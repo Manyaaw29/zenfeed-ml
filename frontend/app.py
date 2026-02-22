@@ -264,7 +264,6 @@ section[data-testid="stSidebar"] {
 # ============================================================================
 PAGE_DESCRIPTION = "🏠 Welcome to ZenFeed — your mental wellness companion."
 
-@st.cache_data(ttl=60)
 def fetch_total_screenings(api_url):
     try:
         response = requests.get(f"{api_url}/stats", timeout=10)
