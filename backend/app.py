@@ -584,6 +584,88 @@ def stats():
             'code': 500
         }), 500
 
+@app.route('/compare', methods=['GET'])
+def compare_models():
+    """
+    Re-run every stored screening through all 3 models and return
+    per-model risk distributions, agreement rate, and disagreement count.
+    """
+    try:
+        records = get_predictions_from_storage()
+        if not records:
+            return jsonify({'total': 0, 'message': 'No screenings recorded yet.'}), 200
+
+        hours_mapping = {
+            'Less than 1 hr': 0.5, 'Less than 1 hour': 0.5, 'Less than an Hour': 0.5,
+            '1–2 hrs': 1.5, 'Between 1 and 2 hours': 1.5,
+            '2–3 hrs': 2.5, 'Between 2 and 3 hours': 2.5,
+            '3–4 hrs': 3.5, 'Between 3 and 4 hours': 3.5,
+            '4–5 hrs': 4.5, 'Between 4 and 5 hours': 4.5,
+            'More than 5 hrs': 6.0, 'More than 5 hours': 6.0,
+        }
+        label_map = {0: 'Healthy', 1: 'At Risk', 2: 'Burnout'}
+
+        model_results = {name: {'Healthy': 0, 'At Risk': 0, 'Burnout': 0}
+                         for name in models}
+        all_agree = 0
+        processed = 0
+
+        for rec in records:
+            try:
+                age    = float(rec.get('age', 20))
+                gender = rec.get('gender', 'Male')
+                rel    = rec.get('relationship_status', 'Single')
+                occ    = rec.get('occupation', 'Student')
+                sm_hrs = rec.get('social_media_hours', 3.0)
+
+                g_enc = label_encoders['gender'].transform([gender])[0] \
+                    if gender in label_encoders['gender'].classes_ else 0
+                r_enc = label_encoders['relationship_status'].transform([rel])[0] \
+                    if rel in label_encoders['relationship_status'].classes_ else 0
+                o_enc = label_encoders['occupation'].transform([occ])[0] \
+                    if occ in label_encoders['occupation'].classes_ else 0
+                if isinstance(sm_hrs, str):
+                    sm_hrs = hours_mapping.get(sm_hrs, 3.0)
+                else:
+                    sm_hrs = float(sm_hrs)
+
+                fv = np.array([[
+                    age, g_enc, r_enc, o_enc, sm_hrs,
+                    float(rec.get('adhd_score', 2.5)),
+                    float(rec.get('anxiety_score', 2.5)),
+                    float(rec.get('self_esteem_score', 2.5)),
+                    float(rec.get('depression_score', 2.5)),
+                ]])
+                fv_scaled = scaler.transform(fv)
+
+                preds = {}
+                for mname, mobj in models.items():
+                    p = int(mobj.predict(fv_scaled)[0])
+                    label = label_map.get(p, 'Healthy')
+                    model_results[mname][label] += 1
+                    preds[mname] = label
+
+                if len(set(preds.values())) == 1:
+                    all_agree += 1
+                processed += 1
+            except Exception:
+                continue
+
+        agreement_rate = round(all_agree / processed * 100, 1) if processed else 0
+        disagreement   = processed - all_agree
+
+        return jsonify({
+            'total': processed,
+            'agreement_count': all_agree,
+            'disagreement_count': disagreement,
+            'agreement_rate': agreement_rate,
+            'model_distributions': model_results,
+        }), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e), 'code': 500}), 500
+
+
 @app.route('/feature-importance', methods=['GET'])
 def get_feature_importance():
     """Return feature importance rankings."""
@@ -664,7 +746,7 @@ if __name__ == '__main__':
     print("=" * 60)
     print(f"✓ Models: {list(models.keys())}")
     print(f"✓ MongoDB: {'Connected' if predictions_collection is not None else 'Using fallback JSON'}")
-    print(f"✓ Endpoints: /predict, /history, /health, /stats, /feature-importance, /models")
+    print(f"✓ Endpoints: /predict, /history, /health, /stats, /feature-importance, /models, /compare")
     print("=" * 60 + "\n")
     
     app.run(debug=True, host='0.0.0.0', port=5000)
