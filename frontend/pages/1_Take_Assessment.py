@@ -3,9 +3,10 @@
 Complete the form to get your personalized wellness report.
 """
 
+import sys, os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 import streamlit as st
 import requests
-import os
 import plotly.graph_objects as go
 import pandas as pd
 from io import BytesIO
@@ -16,6 +17,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from datetime import datetime
+from utils import api_post
 
 try:
     API_URL = st.secrets.get("API_URL", os.environ.get("API_URL", "http://localhost:5000"))
@@ -578,9 +580,10 @@ if submitted:
     }
     
     # Call API
-    with st.spinner("🤖 Analyzing your digital wellness patterns..."):
+    with st.spinner("🤖 Analyzing your digital wellness patterns…"):
         try:
-            response = requests.post(f"{API_URL}/predict", json=payload, timeout=10)
+            response = api_post(f"{API_URL}/predict", json=payload,
+                                wake_msg="Server is waking up (Render free tier) — hang tight ~30 s…")
             
             if response.status_code == 200:
                 result = response.json()

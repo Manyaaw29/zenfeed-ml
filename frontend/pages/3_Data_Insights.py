@@ -3,13 +3,15 @@
 Patterns across all ZenFeed screenings.
 """
 
+import sys, os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 import streamlit as st
 import requests
-import os
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
+from utils import api_get
 
 try:
     API_URL = st.secrets.get("API_URL", os.environ.get("API_URL", "http://localhost:5000"))
@@ -223,8 +225,8 @@ st.markdown("<br>", unsafe_allow_html=True)
 # FETCH DATA
 # ============================================================================
 try:
-    history_response = requests.get(f"{API_URL}/history", timeout=5)
-    feature_response = requests.get(f"{API_URL}/feature-importance", timeout=5)
+    history_response  = api_get(f"{API_URL}/history",            wake_msg="Waking up the server — first visit takes ~30 s…")
+    feature_response  = api_get(f"{API_URL}/feature-importance",  wake_msg="Loading feature data…")
     
     if history_response.status_code != 200 or feature_response.status_code != 200:
         st.warning("⚠️ Unable to fetch data from the API. Please ensure the backend is running.")
