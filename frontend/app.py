@@ -289,8 +289,6 @@ with st.sidebar:
 # ============================================================================
 # SECTION 1 — HERO
 # ============================================================================
-_avg_zen_label = f"{avg_wellness_score}/100" if avg_wellness_score is not None else "—"
-
 _HERO_HTML = """
 <div class="hero-bg" style="
   text-align:center; 
@@ -366,31 +364,26 @@ _HERO_HTML = """
     Understand how your feed is affecting your mind.
   </div>
 
-  <!-- Secondary tagline -->
+  <!-- Subtitle -->
   <div style="
     font-size: 0.95rem;
-    background: linear-gradient(90deg, #5eead4, #93c5fd, #c4b5fd);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #94a3b8;
     margin-bottom: 28px;
-    font-weight: 600;
     position: relative;
     z-index: 1;
   ">
-    Free &nbsp;·&nbsp; 100% Anonymous &nbsp;·&nbsp; Takes Just 2 Minutes
+    A 2-minute anonymous check-in for your digital mental health.
   </div>
 
   <!-- Trust pills -->
   <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:42px; position:relative; z-index:1;">
     <span style="background:rgba(94,234,212,0.1); border:1px solid rgba(94,234,212,0.25); color:#5eead4; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">🔒 No Login Required</span>
-    <span style="background:rgba(147,197,253,0.1); border:1px solid rgba(147,197,253,0.25); color:#93c5fd; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">⭐ Avg ZenScore: AVG_ZEN_PLACEHOLDER</span>
     <span style="background:rgba(196,181,253,0.1); border:1px solid rgba(196,181,253,0.25); color:#c4b5fd; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">📄 Free PDF Report</span>
     <span style="background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.25); color:#f59e0b; padding:6px 14px; border-radius:999px; font-size:0.8rem; font-weight:500;">⚡ Instant Results</span>
   </div>
 
 </div>
-""".replace("AVG_ZEN_PLACEHOLDER", _avg_zen_label)
+"""
 
 st.markdown(_HERO_HTML, unsafe_allow_html=True)
 
@@ -406,7 +399,7 @@ with col2:
 st.markdown("<hr style='border:none;border-top:1px solid #21262d;margin:10px 0 32px 0;'>", unsafe_allow_html=True)
 
 # Fetch real statistics from API (reuse cached value)
-ml_models = 3
+avg_zen_kpi = f"{avg_wellness_score}" if avg_wellness_score is not None else "—"
 features_analyzed = 9
 
 st.markdown(f"""
@@ -418,8 +411,8 @@ st.markdown(f"""
   </div>
 
   <div class="zen-kpi">
-    <div class="zen-kpi-value">{ml_models}</div>
-    <div class="zen-kpi-label">ML Models</div>
+    <div class="zen-kpi-value">{avg_zen_kpi}</div>
+    <div class="zen-kpi-label">Avg. ZenScore</div>
   </div>
 
   <div class="zen-kpi">
