@@ -284,7 +284,7 @@ with st.sidebar:
     st.markdown("---")
     st.markdown(f"🔢 **Total Screenings:** `{total_predictions}`")
     st.markdown("---")
-    st.markdown("<p style='color:#8b949e;font-size:0.75rem;'>For informational purposes only — not a substitute for professional mental health advice.</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#8b949e;font-size:0.75rem;'>For informational purposes only — not a substitute for professional mental health advice. 🌿</p>", unsafe_allow_html=True)
 
 # ============================================================================
 # SECTION 1 — HERO
@@ -376,7 +376,7 @@ st.markdown("""
     position: relative;
     z-index: 1;
   ">
-    Free · Anonymous · Takes 2 minutes
+    Free &nbsp;·&nbsp; 100% Anonymous &nbsp;·&nbsp; Takes Just 2 Minutes
   </div>
 
   <!-- Trust pills -->
