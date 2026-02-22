@@ -376,14 +376,6 @@ with st.sidebar:
     st.markdown("---")
     st.markdown(f"🔢 **Total Screenings:** `{total_predictions}`")
     st.markdown("---")
-    st.markdown("""
-<div style='background:rgba(94,234,212,0.05);border:1px solid rgba(94,234,212,0.15);border-radius:10px;padding:10px 12px;margin-bottom:4px;'>
-  <p style='color:#5eead4;font-size:0.78rem;font-weight:600;margin:0 0 4px 0;'>🤖 Active Model</p>
-  <p style='color:#e6edf3;font-size:0.82rem;margin:0 0 4px 0;font-weight:600;'>Logistic Regression ✅</p>
-  <p style='color:#8b949e;font-size:0.72rem;margin:0;line-height:1.5;'>Default — highest F1 on training eval. Override below in the form.</p>
-</div>
-""", unsafe_allow_html=True)
-    st.markdown("---")
     st.markdown("<p style='color:#8b949e;font-size:0.75rem;'>For informational purposes only — not a substitute for professional mental health advice. 🌿</p>", unsafe_allow_html=True)
 
 # ============================================================================

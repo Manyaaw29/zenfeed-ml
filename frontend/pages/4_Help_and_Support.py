@@ -202,7 +202,7 @@ with st.sidebar:
     st.markdown("---")
     st.markdown(f"🔢 **Total Screenings:** `{total_predictions}`")
     st.markdown("---")
-    st.markdown("<p style='color:#8b949e;font-size:0.75rem;'>🌿 Not a clinical diagnosis.</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#8b949e;font-size:0.75rem;'>For informational purposes only — not a substitute for professional mental health advice. 🌿</p>", unsafe_allow_html=True)
 
 # ============================================================================
 # PAGE HEADER
