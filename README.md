@@ -171,4 +171,4 @@ ZenFeed is a screening tool for awareness purposes only — not a clinical diagn
 
 ---
 
-_Built with for mental wellness ·_
+_Built with for mental wellness 🌿_
